@@ -57,7 +57,7 @@ public class jdbcexp {
 	}
 	System.out.println("Driver OK.");
 	
-	// conexión a la BBDD
+	// BBDD connection
 	try {
 		Connection connection = DriverManager.getConnection(
 			"jdbc:oracle:thin:@//IP:PORT:DDBB",
@@ -70,7 +70,7 @@ public class jdbcexp {
 		
 		Charset charset = Charset.forName("UTF-8");
 		
-		// Carga de la Query a procesar
+		// Load query to be processed
 		String query = "" ;
 		try {
 			List<String> Lquery = Files.readAllLines(fichero, charset) ;
@@ -83,7 +83,7 @@ public class jdbcexp {
 			System.exit (-1) ;
 		}
 
-		// Ejecución del la Query, carga en el RS 
+		// Query execution, load to RS 
 		Statement statement = connection.createStatement () ;
 		ResultSet rs = statement.executeQuery (query) ;
 		
@@ -98,9 +98,9 @@ public class jdbcexp {
 			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 				tstring = rs.getString(i) ;
 				if (!skip) {
-					//solucion al problema euro
+					// fixing euro simbol
 					tstring = (tstring != null)?tstring.replaceAll("","€"):"" ; 
-					//solucion espacios dobles
+					// fixing double space
 					while (tstring.contains("  ")) {
 						tstring = (tstring != null)?tstring.replaceAll("  "," "):"" ;
 					} 
