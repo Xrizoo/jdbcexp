@@ -2,7 +2,7 @@
 // download from query to txt
 // this release has not user and password as parameter, todo for next releases
 // needs java installed & driver JDBC set, this release is for Oracle, future releases will be as parameter
-// Cristóbal Almudéver Gómez - May 2015 - ver 2
+// Cristóbal (Xriz) - May 2015 - ver 2
 
 import java.sql.* ;
 import java.io.* ;
