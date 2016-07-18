@@ -1,5 +1,5 @@
 // jdbcexp [-opciones] <input_sql_file> <output_txt_file>
-// download from query to txt
+// export from query to txt
 // this release has not user and password as parameter, todo for next releases
 // needs java installed & driver JDBC set, this release is for Oracle, future releases will be as parameter
 // Cristóbal (Xriz) - May 2015 - ver 2
