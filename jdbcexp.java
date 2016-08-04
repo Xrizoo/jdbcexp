@@ -1,8 +1,7 @@
-// jdbcexp [-opciones] <input_sql_file> <output_txt_file>
-// export from query to txt
-// this release has not user and password as parameter, todo for next releases
-// needs java installed & driver JDBC set, this release is for Oracle, future releases will be as parameter
-// Cristóbal (Xriz) - May 2015 - ver 2
+// jdbcexp [-options] <input.sql> <output.txt>
+// Export/Unload querys to CSV files
+// Needs installed java and driver JDBC requested
+// Cristóbal Almudéver Gómez - Aug 2016 - ver 3
 
 import java.sql.* ;
 import java.io.* ;
@@ -16,40 +15,86 @@ public class jdbcexp {
 	
 	String fSQL = "" ;
 	String fTXT = "" ;
-	Boolean skip = true ;
+	String vURL = "" ;
+	String vDRIVER = "" ;	
+	String vUSER = "" ;
+	String vPASSWORD = "" ;		
+	String vSEPARATOR = "|";
+	Boolean skip = true;
 	Boolean fallo = false;
+	Boolean help = false;
 	
+	System.out.println("RUNNING...");
 	for (int a = 0; a < args.length; a++) {
-		if (args[a].equals("-c") ) { // -c Fix € and double space
+		if (args[a].equals("-?") ) { // -? Help
+				help = true ;
+				System.out.println("HELP requested.") ;
+				break;
+		}	
+		if (args[a].equals("-f") ) { // -f Fix € and double space
 				skip = false ;
-				System.out.println("Fix € and double space");
+				System.out.println("Fix € symbol and double space");
+		}
+		else if (args[a].startsWith("-c") ) { // -c URL connection
+				a++;
+				vURL = args[a];
+				System.out.println("URL: " + vURL + " passed");
+		}
+		else if (args[a].startsWith("-d") ) { // -c Driver connection
+				a++;
+				vDRIVER = args[a];
+				System.out.println("Driver: " + vDRIVER + " passed");
+		}
+		else if (args[a].startsWith("-u") ) { 
+				a++;
+				vUSER = args[a];
+				System.out.println("User: " + vUSER + " passed");
+		}
+		else if (args[a].startsWith("-p") ) { 
+				a++;
+				vPASSWORD = args[a];
+				System.out.println("Password: *** passed");
+		}
+		else if (args[a].startsWith("-s") ) { 
+				a++;
+				vSEPARATOR = args[a];
+				System.out.println("Column char separation: " + vSEPARATOR + " set");
 		}
 		else if (args[a].charAt(0) != '-' & fSQL == "") {
 				fSQL = args[a].toString() ;
-				System.out.println("Processing: " + fSQL);
+				System.out.print("Processing: " + fSQL);
 		}
 		else if (args[a].charAt(0) != '-' & fTXT == "") {
 				fTXT = args[a].toString() ;
+				System.out.println(" -> " + fTXT);
 		}	 	
 		else {
-			System.out.println("ERROR in parameter: " + args[a]) ;
+			System.out.println("Parameter ERROR: " + args[a]) ;
 			fallo = true ;
 			break;
 		}
 	}
 	
-	if (fSQL == "" | fTXT == "" | fallo) {
+	if (fSQL == "" | fTXT == "" | fallo | help ) {
 		System.out.println("Use:") ;
-		System.out.println("jdbcexp [-parameters] <input_sql_file> <output_txt_file>") ;
-		System.out.println("Parámetros:") ;
-		System.out.println("\t-c Fix € and double space to output") ;
+		System.out.println("\tjdbcexp [-parameters] <imput.sql> <output.txt>") ;
+		System.out.println("Parameters:") ;
+		System.out.println("\t-c <URL-JDBC-Connection-string>") ;
+		System.out.println("\t\tie: -c jdbc:oracle:thin:@127.0.0.1:1539:DDBB") ;
+		System.out.println("\t-u <User>") ;		
+		System.out.println("\t-p <Password>") ;
+		System.out.println("\t-d <JDBC-driver-string>") ;
+		System.out.println("\t\tie: -d oracle.jdbc.driver.OracleDriver") ;		
+		System.out.println("\t-s \"<Column-char-separation>\" -> default is |") ;
+		System.out.println("\t\tFor special chars, preceded by \\") ;		
+		System.out.println("\t-f Fix character € and double space") ;		
 		System.exit (-1) ;
 	}
 	
 	
-	// driver connection JDBC to BBDD
+	// Driver JDBC connection to BBDD
 	try {
-		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Class.forName(vDRIVER);
 	}
 	catch (ClassNotFoundException e) {
 		System.err.println (e) ;
@@ -60,9 +105,9 @@ public class jdbcexp {
 	// BBDD connection
 	try {
 		Connection connection = DriverManager.getConnection(
-			"jdbc:oracle:thin:@//IP:PORT:DDBB",
-			"USER",
-			"PASSWORD"
+			vURL,
+			vUSER,
+			vPASSWORD
 		);
 		System.out.println("DDBB OK.");
 
@@ -70,7 +115,7 @@ public class jdbcexp {
 		
 		Charset charset = Charset.forName("UTF-8");
 		
-		// Load query to be processed
+		// Load query to process
 		String query = "" ;
 		try {
 			List<String> Lquery = Files.readAllLines(fichero, charset) ;
@@ -83,39 +128,39 @@ public class jdbcexp {
 			System.exit (-1) ;
 		}
 
-		// Query execution, load to RS 
+		// Query execution, load to RS
 		Statement statement = connection.createStatement () ;
 		ResultSet rs = statement.executeQuery (query) ;
 		
 		ResultSetMetaData rsmd = rs.getMetaData();
 		
 		FileWriter fw =  new FileWriter(fTXT);
-		int rows = 0 ;
+		int records = 0 ;
 		String tstring = null ;
 		while ( rs.next () ) {
-			// Send to file
-			rows++;
+			// Send to a file
+			records++;
 			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
 				tstring = rs.getString(i) ;
 				if (!skip) {
-					// fixing euro simbol
+					// euro fix symbol
 					tstring = (tstring != null)?tstring.replaceAll("","€"):"" ; 
-					// fixing double space
+					// double space fix
 					while (tstring.contains("  ")) {
 						tstring = (tstring != null)?tstring.replaceAll("  "," "):"" ;
 					} 
 				}
 				if (i == rsmd.getColumnCount()) 
-					{fw.write (((rs.getString (i) == null)?"":tstring) + "|\r\n"); } 
+					{fw.write (((rs.getString (i) == null)?"":tstring) + vSEPARATOR + "\r\n"); } 
 				else 
-					{fw.write (((rs.getString (i) == null)?"":tstring) + "|"); }
+					{fw.write (((rs.getString (i) == null)?"":tstring) + vSEPARATOR ); }
 			}
-		if (rows % 1000 == 0) { System.out.print("·") ; }
+		if (records % 1000 == 0) { System.out.print("·") ; } //every 1000 records, prints one dot
 		}	
 		connection.close () ;
 		
 		fw.close();
-		System.out.println("·\n" + rows + " Records.\n");
+		System.out.println("·\n" + records + " Exported records.\n");
 
 	}
 	catch (java.sql.SQLException e) {
