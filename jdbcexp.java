@@ -1,7 +1,7 @@
 // jdbcexp [-options] <input.sql> <output.txt>
 // Export/Unload querys to CSV files
-// Needs installed java and driver JDBC requested
-// Cristóbal Almudéver Gómez - Aug 2016 - ver 3
+// Needs java and JDBC driver to be installed on running system.
+// Cristóbal Almudéver Gómez - Aug 2016 - ver 3.1
 
 import java.sql.* ;
 import java.io.* ;
@@ -58,7 +58,10 @@ public class jdbcexp {
 		else if (args[a].startsWith("-s") ) { 
 				a++;
 				vSEPARATOR = args[a];
-				System.out.println("Column char separation: " + vSEPARATOR + " set");
+				if (vSEPARATOR.startsWith("t")) {vSEPARATOR = "\t";}; // tab character recognition
+				if (vSEPARATOR.startsWith("r")) {vSEPARATOR = "\r";}; // return character recognition
+				if (vSEPARATOR.startsWith("n")) {vSEPARATOR = "\n";}; // newline character recognition
+				System.out.println("Column char separation: " + args[a] + " set");
 		}
 		else if (args[a].charAt(0) != '-' & fSQL == "") {
 				fSQL = args[a].toString() ;
@@ -76,16 +79,19 @@ public class jdbcexp {
 	}
 	
 	if (fSQL == "" | fTXT == "" | fallo | help ) {
+		System.out.println();
+		System.out.println("JDBCEXP v3.1");
+		System.out.println("Export data from DDBB with JDBC by Cristobal Almudever - Aug.2016") ;
 		System.out.println("Use:") ;
 		System.out.println("\tjdbcexp [-parameters] <imput.sql> <output.txt>") ;
 		System.out.println("Parameters:") ;
 		System.out.println("\t-c <URL-JDBC-Connection-string>") ;
 		System.out.println("\t\tie: -c jdbc:oracle:thin:@127.0.0.1:1539:DDBB") ;
-		System.out.println("\t-u <User>") ;		
-		System.out.println("\t-p <Password>") ;
 		System.out.println("\t-d <JDBC-driver-string>") ;
 		System.out.println("\t\tie: -d oracle.jdbc.driver.OracleDriver") ;		
-		System.out.println("\t-s \"<Column-char-separation>\" -> default is |") ;
+		System.out.println("\t-u <User>") ;		
+		System.out.println("\t-p <Password>") ;
+		System.out.println("\t-s <Column-char-separation> -> default is |") ;
 		System.out.println("\t\tFor special chars, preceded by \\") ;		
 		System.out.println("\t-f Fix character € and double space") ;		
 		System.exit (-1) ;
