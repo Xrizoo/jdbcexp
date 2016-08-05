@@ -9,7 +9,6 @@ import java.nio.charset.Charset ;
 import java.nio.file.* ;
 import java.util.List ;
 
-
 public class jdbcexp {
 	public static void main(String[] args) throws IOException {
 	
