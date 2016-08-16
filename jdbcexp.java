@@ -8,7 +8,7 @@ import java.io.* ;
 import java.nio.charset.Charset ;
 import java.nio.file.* ;
 import java.util.List ;
-
+import java.math.* ; // for BigDecimal and BigInteger support
 
 public class jdbcexp {
 	public static void main(String[] args) throws IOException {
@@ -161,7 +161,7 @@ public class jdbcexp {
 				else 
 					{fw.write (((rs.getString (i) == null)?"":tstring) + vSEPARATOR ); }
 			}
-		if (records % 1000 == 0) { System.out.print("·") ; } //every 1000 records, prints one dot
+		if (records % 1000 == 0) { System.out.print("·") ; } // on every 1000 records, show one dot
 		}	
 		connection.close () ;
 		
