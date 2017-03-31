@@ -1,4 +1,4 @@
-// jdbcexp [-options] <input.sql> <output.txt>
+// jdbcexp [-options] <input.sql> <output.csv>
 // Export/Unload querys to CSV files
 // Needs java and JDBC driver to be installed on running system.
 // Cristóbal Almudéver Gómez - Aug 2016 - ver 3.1
