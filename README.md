@@ -1,5 +1,5 @@
 # jdbcexp
-Dump data from DB throught command line and JDBC connection.
+Unload or export data from DB throught command line and JDBC connection.
 
 v3.1: Some minor fixes
 
