@@ -161,7 +161,7 @@ public class jdbcexp {
 				else 
 					{fw.write (((rs.getString (i) == null)?"":tstring) + vSEPARATOR ); }
 			}
-		if (records % 1000 == 0) { System.out.print("·") ; } // on every 1000 records, show one dot
+		if (records % 1000 == 0) { System.out.print("·") ; } // on every 1000 records, display one dot
 		}	
 		connection.close () ;
 		
