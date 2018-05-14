@@ -74,7 +74,7 @@ public class jdbcexp {
 		}
 		else if (args[a].charAt(0) != '-' & fTXT == "") {
 				fTXT = args[a].toString() ;
-				System.out.println((addToTarget) ? " -+> " : " -> " + fTXT);
+				System.out.println(((addToTarget) ? " -+> " : " -> ") + fTXT);
 		}	 	
 		else {
 			System.out.println("Parameter ERROR: " + args[a]) ;
