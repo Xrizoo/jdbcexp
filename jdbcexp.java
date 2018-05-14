@@ -74,7 +74,7 @@ public class jdbcexp {
 		}
 		else if (args[a].charAt(0) != '-' & fTXT == "") {
 				fTXT = args[a].toString() ;
-				System.out.println(" -> " + fTXT);
+				System.out.println((addToTarget) ? " ->> " : " -> " + fTXT);
 		}	 	
 		else {
 			System.out.println("Parameter ERROR: " + args[a]) ;
@@ -88,7 +88,7 @@ public class jdbcexp {
 		System.out.println("JDBCEXP v3.2");
 		System.out.println("Export data from DDBB with JDBC by Cristobal Almudever - May.2018") ;
 		System.out.println("Use:") ;
-		System.out.println("\tjdbcexp [-parameters] <imput.sql> <output.txt>") ;
+		System.out.println("\tjdbcexp [-parameters] <input.sql> <output.txt>") ;
 		System.out.println("Parameters:") ;
 		System.out.println("\t-c <URL-JDBC-Connection-string>") ;
 		System.out.println("\t\tie: -c jdbc:oracle:thin:@127.0.0.1:1539:DDBB") ;
@@ -99,7 +99,7 @@ public class jdbcexp {
 		System.out.println("\t-s <Column-char-separation> -> default is |") ;
 		System.out.println("\t\tFor special chars, preceded by \\") ;		
 		System.out.println("\t-f Fix character € and double space") ;		
-		System.out.println("\t-a Add result to target file, not overwrite") ;		
+		System.out.println("\t-a Add result to output file, not overwrite") ;		
 		System.exit (-1) ;
 	}
 	
