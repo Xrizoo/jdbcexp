@@ -1,7 +1,7 @@
 // jdbcexp [-options] <input.sql> <output.csv>
 // Export/Unload querys to CSV files
 // Needs java and JDBC driver to be installed on running system.
-// Cristóbal Almudéver Gómez - Aug 2016 - ver 3.1
+// Cristóbal Almudéver Gómez - May 2018 - ver 3.2
 
 import java.sql.* ;
 import java.io.* ;
@@ -23,7 +23,8 @@ public class jdbcexp {
 	Boolean skip = true;
 	Boolean fallo = false;
 	Boolean help = false;
-	
+	Boolean addToTarget = false;
+		
 	System.out.println("RUNNING...");
 	for (int a = 0; a < args.length; a++) {
 		if (args[a].equals("-?") ) { // -? Help
@@ -35,6 +36,10 @@ public class jdbcexp {
 				skip = false ;
 				System.out.println("Fix € symbol and double space");
 		}
+		if (args[a].equals("-a") ) { // -a Add result to the existing file (create new file if not)
+				addToTarget = true ;
+				System.out.println("Add to target file (create new file if not exist)");
+		}		
 		else if (args[a].startsWith("-c") ) { // -c URL connection
 				a++;
 				vURL = args[a];
@@ -80,8 +85,8 @@ public class jdbcexp {
 	
 	if (fSQL == "" | fTXT == "" | fallo | help ) {
 		System.out.println();
-		System.out.println("JDBCEXP v3.1");
-		System.out.println("Export data from DDBB with JDBC by Cristobal Almudever - Aug.2016") ;
+		System.out.println("JDBCEXP v3.2");
+		System.out.println("Export data from DDBB with JDBC by Cristobal Almudever - May.2018") ;
 		System.out.println("Use:") ;
 		System.out.println("\tjdbcexp [-parameters] <imput.sql> <output.txt>") ;
 		System.out.println("Parameters:") ;
@@ -94,6 +99,7 @@ public class jdbcexp {
 		System.out.println("\t-s <Column-char-separation> -> default is |") ;
 		System.out.println("\t\tFor special chars, preceded by \\") ;		
 		System.out.println("\t-f Fix character € and double space") ;		
+		System.out.println("\t-a Add result to target file, not overwrite") ;		
 		System.exit (-1) ;
 	}
 	
@@ -140,7 +146,7 @@ public class jdbcexp {
 		
 		ResultSetMetaData rsmd = rs.getMetaData();
 		
-		FileWriter fw =  new FileWriter(fTXT);
+		FileWriter fw =  new FileWriter(fTXT, addToTarget);
 		int records = 0 ;
 		String tstring = null ;
 		while ( rs.next () ) {
