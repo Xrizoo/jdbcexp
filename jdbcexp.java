@@ -38,7 +38,7 @@ public class jdbcexp {
 		}
 		if (args[a].equals("-a") ) { // -a Add result to the existing file (create new file if not)
 				addToTarget = true ;
-				System.out.println("Add to target file (create new file if not exist)");
+				System.out.println("Add to output file (create new one if not exist)");
 		}		
 		else if (args[a].startsWith("-c") ) { // -c URL connection
 				a++;
