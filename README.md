@@ -1,7 +1,7 @@
 # jdbcexp
 Unload or export data from DB throught command line and JDBC connection.
 
-v3.2: Allow add exports to a single output file (parameter -a)
+v3.2: Allow add multiple exports to a single output file (parameter -a)
 
 v3.1: Some minor fixes
 
