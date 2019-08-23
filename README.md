@@ -1,5 +1,5 @@
 # jdbcexp
-Unload or export data from DB throught command line and JDBC connection.
+Export CSV data from a DB through a JDBC connection with java command line app.
 
 v3.2: Allow add multiple exports to a single output file (parameter -a)
 
