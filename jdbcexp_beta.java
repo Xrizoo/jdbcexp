@@ -141,7 +141,7 @@ public class jdbcexp_beta {
     private static void showHelp() {
 		System.out.println();
 		System.out.println("JDBCEXP v3.3b");
-		System.out.println("Export data from DDBB with JDBC by Cristobal Almudever - May.2018") ;
+		System.out.println("Export data from DDBB with JDBC by Cristobal Almudever - Sep.2024") ;
 		System.out.println("Use:") ;
 		System.out.println("\tjdbcexp [-parameters] <input.sql> <output.csv>") ;
 		System.out.println("Parameters:") ;
