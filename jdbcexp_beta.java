@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.util.*;
 
-public class jdbcexp {
+public class jdbcexp_beta {
     public static void main(String[] args) throws IOException {
 
         String fSQL = "";
@@ -139,18 +139,22 @@ public class jdbcexp {
     }
 
     private static void showHelp() {
-        System.out.println("JDBCEXP v3.2");
-        System.out.println("Export data from databases using JDBC");
-        System.out.println("Usage:");
-        System.out.println("	jdbcexp [-options] <input.sql> <output.csv>");
-        System.out.println("Options:");
-        System.out.println("	-c <JDBC-connection-URL>");
-        System.out.println("	-d <JDBC-driver>");
-        System.out.println("	-u <User>");
-        System.out.println("	-p <Password>");
-        System.out.println("	-s <column-separator> (default is '|')");
-        System.out.println("	-f Fix € symbol and double spaces");
-        System.out.println("	-a Append results to the output file");
-        System.exit(-1);
+		System.out.println();
+		System.out.println("JDBCEXP v3.3b");
+		System.out.println("Export data from DDBB with JDBC by Cristobal Almudever - May.2018") ;
+		System.out.println("Use:") ;
+		System.out.println("\tjdbcexp [-parameters] <input.sql> <output.csv>") ;
+		System.out.println("Parameters:") ;
+		System.out.println("\t-c <URL-JDBC-Connection-string>") ;
+		System.out.println("\t\tie: -c jdbc:oracle:thin:@127.0.0.1:1539:DDBB") ;
+		System.out.println("\t-d <JDBC-driver-string>") ;
+		System.out.println("\t\tie: -d oracle.jdbc.driver.OracleDriver") ;		
+		System.out.println("\t-u <User>") ;		
+		System.out.println("\t-p <Password>") ;
+		System.out.println("\t-s <separator-column-char> -> default is |") ;
+		System.out.println("\t\tFor special chars, preceded by \\") ;		
+		System.out.println("\t-f Fix character € and double space") ;		
+		System.out.println("\t-a Add result to output file, not overwrite") ;		
+		System.exit (-1) ;
     }
 }
